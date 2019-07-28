@@ -1,9 +1,6 @@
 import numpy as np
 import pandas as pd
 import yfinance as yf
-import requests
-from bs4 import BeautifulSoup
-import datetime
 import time
 
 import utils
@@ -11,22 +8,25 @@ import utils
 COLUMNAS = ['Open', 'High', 'Low', 'Close', 'Volume']
 LEN_TICKERS = 251
 
-
-def get_ticker_info(ticker, cols, start=datetime.datetime(2017,1,1), end=datetime.datetime(2018,1,1)):
+#***************************************************************************************************
+#***************************************************************************************************
+#***************************************************************************************************
+def get_ticker_info(ticker, cols):
 
     try:
         ticker_info = yf.Ticker(ticker)
-
         # get historical market data
         hist = ticker_info.history(period="max")
-        hist = hist[(hist.index >= start) & (hist.index <= end)]
+        hist = hist.loc['2017-01-01':'2018-01-01']
 
         return hist[cols]
     except ValueError:
         print(ticker + ' does not exists.')
         return None
 
-
+#***************************************************************************************************
+#***************************************************************************************************
+#***************************************************************************************************
 def save_info():
 
     list400 = utils.get_SP_400()
@@ -80,9 +80,7 @@ def save_info():
     df_return.to_csv('outputs/yahoo__return.csv', index=False)
     df_highLow.to_csv('outputs/yahoo__high_low.csv', index=False)
     df_turnover.to_csv('outputs/yahoo__turnover.csv', index=False)
-
-
-#hist, stock = get_ticker_info('ACHC',COLUMNAS,'','')
-#print(hist.head())
-#get_SP_400()
-save_info()
+#***************************************************************************************************
+#***************************************************************************************************
+#***************************************************************************************************
+#save_info()
